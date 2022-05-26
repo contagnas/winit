@@ -240,7 +240,7 @@ impl<T> WindowTarget<T> {
                     id: device_id as u64,
                     device_id: RootDeviceId(DeviceId(device_id)),
                     phase: TouchPhase::Moved,
-                    force: Some(force), // Todo
+                    force: Some(force),
                     location,
                 }),
             });
@@ -268,7 +268,7 @@ impl<T> WindowTarget<T> {
                     id: device_id as u64,
                     device_id: RootDeviceId(DeviceId(device_id)),
                     phase: TouchPhase::Ended,
-                    force: Some(force), // Todo
+                    force: Some(force),
                     location,
                 }),
             });
@@ -282,7 +282,7 @@ impl<T> WindowTarget<T> {
                     id: device_id as u64,
                     device_id: RootDeviceId(DeviceId(device_id)),
                     phase: TouchPhase::Cancelled,
-                    force: Some(force), // Todo
+                    force: Some(force),
                     location,
                 }),
             });
