@@ -74,7 +74,7 @@ impl<T> WindowTarget<T> {
             runner.send_event(Event::WindowEvent {
                 window_id: WindowId(id),
                 event: WindowEvent::KeyboardInput {
-                    device_id: DeviceId(unsafe { device::Id::dummy() }),
+                    device_id: RootDeviceId(unsafe { device::Id::dummy() }),
                     input: KeyboardInput {
                         scancode,
                         state: ElementState::Pressed,
@@ -92,7 +92,7 @@ impl<T> WindowTarget<T> {
             runner.send_event(Event::WindowEvent {
                 window_id: WindowId(id),
                 event: WindowEvent::KeyboardInput {
-                    device_id: DeviceId(unsafe { device::Id::dummy() }),
+                    device_id: RootDeviceId(unsafe { device::Id::dummy() }),
                     input: KeyboardInput {
                         scancode,
                         state: ElementState::Released,
@@ -117,7 +117,7 @@ impl<T> WindowTarget<T> {
             runner.send_event(Event::WindowEvent {
                 window_id: WindowId(id),
                 event: WindowEvent::CursorLeft {
-                    device_id: DeviceId(device::Id(pointer_id)),
+                    device_id: RootDeviceId(device::Id(pointer_id)),
                 },
             });
         });
@@ -127,7 +127,7 @@ impl<T> WindowTarget<T> {
             runner.send_event(Event::WindowEvent {
                 window_id: WindowId(id),
                 event: WindowEvent::CursorEntered {
-                    device_id: DeviceId(device::Id(pointer_id)),
+                    device_id: RootDeviceId(device::Id(pointer_id)),
                 },
             });
         });
@@ -137,13 +137,13 @@ impl<T> WindowTarget<T> {
             runner.send_event(Event::WindowEvent {
                 window_id: WindowId(id),
                 event: WindowEvent::CursorMoved {
-                    device_id: DeviceId(device::Id(pointer_id)),
+                    device_id: RootDeviceId(device::Id(pointer_id)),
                     position,
                     modifiers,
                 },
             });
             runner.send_event(Event::DeviceEvent {
-                device_id: DeviceId(device::Id(pointer_id)),
+                device_id: RootDeviceId(device::Id(pointer_id)),
                 event: DeviceEvent::MouseMotion {
                     delta: (delta.x, delta.y),
                 },
@@ -159,7 +159,7 @@ impl<T> WindowTarget<T> {
                 std::iter::once(Event::WindowEvent {
                     window_id: WindowId(id),
                     event: WindowEvent::CursorMoved {
-                        device_id: DeviceId(device::Id(pointer_id)),
+                        device_id: RootDeviceId(device::Id(pointer_id)),
                         position,
                         modifiers,
                     },
@@ -167,7 +167,7 @@ impl<T> WindowTarget<T> {
                 .chain(std::iter::once(Event::WindowEvent {
                     window_id: WindowId(id),
                     event: WindowEvent::MouseInput {
-                        device_id: DeviceId(device::Id(pointer_id)),
+                        device_id: RootDeviceId(device::Id(pointer_id)),
                         state: ElementState::Pressed,
                         button,
                         modifiers,
@@ -181,7 +181,7 @@ impl<T> WindowTarget<T> {
             runner.send_event(Event::WindowEvent {
                 window_id: WindowId(id),
                 event: WindowEvent::MouseInput {
-                    device_id: DeviceId(device::Id(pointer_id)),
+                    device_id: RootDeviceId(device::Id(pointer_id)),
                     state: ElementState::Released,
                     button,
                     modifiers,
@@ -194,7 +194,7 @@ impl<T> WindowTarget<T> {
             runner.send_event(Event::WindowEvent {
                 window_id: WindowId(id),
                 event: WindowEvent::MouseWheel {
-                    device_id: DeviceId(device::Id(pointer_id)),
+                    device_id: RootDeviceId(device::Id(pointer_id)),
                     delta,
                     phase: TouchPhase::Moved,
                     modifiers,
@@ -235,10 +235,10 @@ impl<T> WindowTarget<T> {
         let runner = self.runner.clone();
         canvas.on_touch_move(move |device_id, location, force| {
             runner.send_event(Event::WindowEvent {
-                window_id: RootWindowId(id),
+                window_id: WindowId(id),
                 event: WindowEvent::Touch(Touch {
                     id: device_id as u64,
-                    device_id: RootDeviceId(DeviceId(device_id)),
+                    device_id: RootDeviceId(device::Id(device_id)),
                     phase: TouchPhase::Moved,
                     force: Some(force),
                     location,
@@ -249,10 +249,10 @@ impl<T> WindowTarget<T> {
         let runner = self.runner.clone();
         canvas.on_touch_down(move |device_id, location, force| {
             runner.send_event(Event::WindowEvent {
-                window_id: RootWindowId(id),
+                window_id: WindowId(id),
                 event: WindowEvent::Touch(Touch {
                     id: device_id as u64,
-                    device_id: RootDeviceId(DeviceId(device_id)),
+                    device_id: RootDeviceId(device::Id(device_id)),
                     phase: TouchPhase::Started,
                     force: Some(force),
                     location,
@@ -263,10 +263,10 @@ impl<T> WindowTarget<T> {
         let runner = self.runner.clone();
         canvas.on_touch_up(move |device_id, location, force| {
             runner.send_event(Event::WindowEvent {
-                window_id: RootWindowId(id),
+                window_id: WindowId(id),
                 event: WindowEvent::Touch(Touch {
                     id: device_id as u64,
-                    device_id: RootDeviceId(DeviceId(device_id)),
+                    device_id: RootDeviceId(device::Id(device_id)),
                     phase: TouchPhase::Ended,
                     force: Some(force),
                     location,
@@ -277,10 +277,10 @@ impl<T> WindowTarget<T> {
         let runner = self.runner.clone();
         canvas.on_touch_cancel(move |device_id, location, force| {
             runner.send_event(Event::WindowEvent {
-                window_id: RootWindowId(id),
+                window_id: WindowId(id),
                 event: WindowEvent::Touch(Touch {
                     id: device_id as u64,
-                    device_id: RootDeviceId(DeviceId(device_id)),
+                    device_id: RootDeviceId(device::Id(device_id)),
                     phase: TouchPhase::Cancelled,
                     force: Some(force),
                     location,
